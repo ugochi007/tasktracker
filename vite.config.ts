@@ -4,6 +4,7 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
+  base: "/tasktracker/", // <-- Add this line for GitHub Pages deployment
   plugins: [
     react(),
     runtimeErrorOverlay(),
