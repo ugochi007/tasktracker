@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="0; url=/" />
+  </head>
+  <body>
+    <script>
+      // Redirect all 404s to the root, preserving the path for the SPA router
+      var l = window.location;
+      var base = "/tasktracker";
+      var redirect = base + "/#" + l.pathname.replace(base, "") + l.search + l.hash;
+      window.location.replace(redirect);
+    </script>
+  </body>
+</html>
