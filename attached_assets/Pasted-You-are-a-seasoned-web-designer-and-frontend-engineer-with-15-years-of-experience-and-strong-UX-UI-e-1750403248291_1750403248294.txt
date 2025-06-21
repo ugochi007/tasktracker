@@ -1,0 +1,137 @@
+You are a seasoned web designer and frontend engineer with 15 years of experience and strong UX/UI expertise. Build a modern, highly interactive personal portfolio for “Benedict” by adapting the ecommerce-like design template into a portfolio context, but with a dynamic background that cycles or animates using these brand colors:
+
+* \#7B61FF (primary accent purple)
+* \#000000 (black)
+* \#FFFFFF (white)
+* \#FF5E5B (secondary accent red)
+
+Use React (or Next.js) + Tailwind CSS, plus an animation library (e.g., Framer Motion) or custom CSS keyframes for background animations. Ensure performance and accessibility.
+
+---
+
+### Tailwind Configuration
+
+* Extend `tailwind.config.js` with brand colors and custom background animations:
+
+```js
+module.exports = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        primary: '#7B61FF',
+        secondary: '#FF5E5B',
+        black: '#000000',
+        white: '#FFFFFF',
+      },
+      keyframes: {
+        gradientShift: {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%':     { 'background-position': '100% 50%' },
+        },
+        colorFade: {
+          '0%':   { background: '#7B61FF' },
+          '25%':  { background: '#000000' },
+          '50%':  { background: '#FFFFFF' },
+          '75%':  { background: '#FF5E5B' },
+          '100%': { background: '#7B61FF' },
+        },
+      },
+      animation: {
+        'gradient-animate': 'gradientShift 15s ease infinite',
+        'color-fade': 'colorFade 20s ease infinite',
+      },
+      backgroundImage: theme => ({
+        'dynamic-gradient': 'linear-gradient(270deg, #7B61FF, #000000, #FFFFFF, #FF5E5B)',
+      }),
+    }
+  },
+  plugins: [require('@tailwindcss/forms')],
+}
+```
+
+---
+
+### Layout & Background
+
+Wrap the entire app in a `Layout` component that includes the animated background:
+
+```jsx
+<div className="relative min-h-screen overflow-hidden bg-black">
+  <div className="absolute inset-0 bg-[length:200%_200%] bg-dynamic-gradient animate-gradient-animate"></div>
+  <div className="relative z-10 flex flex-col min-h-screen">
+    <Navbar />
+    <main className="flex-1">{children}</main>
+    <Footer />
+  </div>
+</div>
+```
+
+Optional overlay approach:
+
+```jsx
+<div className="absolute inset-0 animate-color-fade mix-blend-overlay pointer-events-none"></div>
+```
+
+---
+
+### Hero Section
+
+* Left side: "Hi, I’m Benedict" + badges like "Product Design", "UI/UX", "Frontend" + CTA buttons ("View My Work", "Contact Me")
+* Right side: image/illustration of Benedict with overlay card for testimonial or featured project
+* Vertical sidebar: social links (GitHub, LinkedIn, Behance)
+
+Use Tailwind + Framer Motion for animation and responsiveness. Example snippet:
+
+```jsx
+<section id="hero" className="relative flex justify-center items-center py-16">
+  <div className="relative max-w-5xl mx-4 sm:mx-auto px-6 py-12 bg-white rounded-3xl shadow-2xl overflow-visible">
+    <div className="flex flex-col lg:flex-row items-center">
+      {/* Text */}
+      <motion.div className="flex-1 text-center lg:text-left">
+        <h1 className="text-5xl font-extrabold text-black">Hi, I’m Benedict</h1>
+        <p className="mt-4 text-lg text-gray-600">Product Designer & Frontend Enthusiast</p>
+        <div className="mt-6 flex flex-wrap justify-center lg:justify-start gap-2">
+          {['Product Design','UI/UX','Frontend Dev'].map(skill => <BadgePill key={skill} text={skill} />)}
+        </div>
+        <div className="mt-8 flex justify-center lg:justify-start space-x-4">
+          <a href="#projects" className="px-6 py-3 bg-secondary text-white rounded-full hover:scale-105 transform transition">View My Work</a>
+          <a href="#contact" className="px-6 py-3 border-2 border-primary text-primary rounded-full hover:bg-primary hover:text-white transition">Contact Me</a>
+        </div>
+      </motion.div>
+      {/* Image */}
+      <motion.div className="flex-1 mt-10 lg:mt-0 lg:pl-8 relative">
+        <div className="w-64 h-64 mx-auto relative">
+          <Image src="/assets/portrait-placeholder.png" layout="fill" className="rounded-full shadow-xl" />
+        </div>
+        <OverlayCard className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4" />
+      </motion.div>
+    </div>
+    <SocialSidebar className="absolute left-[-2rem] top-1/3" />
+  </div>
+</section>
+```
+
+---
+
+### Sections
+
+* **Projects Section**: Grid of white cards on dark background. Each card includes image, title, description, and "View Case Study" link.
+* **Case Study Template**: Dedicated page for each project. Include problem, research, solution, result.
+* **About Section**: Timeline, skill bars, testimonials in card format.
+* **Contact Section**: Tailwind form inside white rounded container, styled buttons, contact links.
+* **Footer**: Minimal with back-to-top, social icons, copyright.
+
+---
+
+### Deliverables
+
+1. Fully responsive portfolio with dynamic background.
+2. Reusable components for badges, cards, overlays, navbar, social sidebar.
+3. Background animation using the 4 brand colors.
+4. Accessible, performant code with reduced motion support.
+5. README with setup and deployment steps.
+
+---
+
+This prompt should be used as a single file to instruct any AI coding agent (like Replit AI, Copilot Workspace, or ChatGPT code interpreter) to build Benedict's portfolio site from scratch with modern UX/UI principles and strong visual identity through brand color usage and motion design.
